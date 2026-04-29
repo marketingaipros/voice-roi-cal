@@ -42,37 +42,37 @@
                         <span class="font-bold text-indigo-600" id="callsVal">1000</span>
                         <span class="text-xs text-slate-400">10,000+</span>
                     </div>
-                    <input type="range" min="100" max="10000" step="50" value="1000" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="callsInput">
+                    <input type="range" min="100" max="10000" step="50" value="2550" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="callsInput">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Missed Call Rate (%)</label>
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs text-slate-400">5%</span>
-                        <span class="font-bold text-indigo-600" id="missedRateVal">20%</span>
+                        <span class="font-bold text-indigo-600" id="missedRateVal">11%</span>
                         <span class="text-xs text-slate-400">50%</span>
                     </div>
-                    <input type="range" min="5" max="50" step="1" value="20" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="missedRateInput">
+                    <input type="range" min="5" max="50" step="1" value="11" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="missedRateInput">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Average Value per Customer ($)</label>
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs text-slate-400">$50</span>
-                        <span class="font-bold text-indigo-600" id="customerValueVal">$500</span>
+                        <span class="font-bold text-indigo-600" id="customerValueVal">$300</span>
                         <span class="text-xs text-slate-400">$5,000</span>
                     </div>
-                    <input type="range" min="50" max="5000" step="50" value="500" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="customerValueInput">
+                    <input type="range" min="50" max="5000" step="50" value="300" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="customerValueInput">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-600 mb-1">Conversion Rate from Calls (%)</label>
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs text-slate-400">1%</span>
-                        <span class="font-bold text-indigo-600" id="conversionRateVal">10%</span>
+                        <span class="font-bold text-indigo-600" id="conversionRateVal">13%</span>
                         <span class="text-xs text-slate-400">50%</span>
                     </div>
-                    <input type="range" min="1" max="50" step="1" value="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="conversionRateInput">
+                    <input type="range" min="1" max="50" step="1" value="13" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="conversionRateInput">
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="mt-8 text-center">
-                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 w-full">
+                    <button onclick="handleCTA()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 w-full">
                         Get Started with AI Voice
                     </button>
                     <p class="text-xs text-slate-400 mt-4">Estimated costs of AI agents typically run a fraction of recovered revenue.</p>
@@ -148,12 +148,17 @@
             const lostRevenue = lostCustomers * customerValue;
             
             // Assume AI Voice agent recovers 80% of missed opportunities
-            const aiRecoveryRate = 0.8;
-            const recoveredRevenue = lostRevenue * aiRecoveryRate;
+            const recoveryRate = 0.80;
+            const recoveredRevenue = lostRevenue * recoveryRate;
 
             missedCallsOut.innerText = missedCalls.toLocaleString();
             lostRevenueOut.innerText = formatCurrency(lostRevenue);
             recoveredRevenueOut.innerText = formatCurrency(recoveredRevenue);
+        }
+
+        function handleCTA() {
+            const bookingURL = 'https://calendly.com/aihubagency/30min';
+            window.open(bookingURL, '_blank');
         }
 
         [callsInput, missedRateInput, customerValueInput, conversionRateInput].forEach(input => {
