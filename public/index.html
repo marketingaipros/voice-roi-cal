@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Agent ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4f46e5;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased py-10 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+        <div class="bg-indigo-600 text-white p-8 text-center">
+            <h1 class="text-3xl font-bold mb-2">AI Voice Agent ROI Calculator</h1>
+            <p class="text-indigo-100 text-lg">Estimate the cost of missed calls and discover potential savings.</p>
+        </div>
+
+        <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-10">
+            
+            <!-- Inputs Section -->
+            <div class="space-y-8">
+                <h2 class="text-2xl font-semibold text-slate-800 border-b pb-2">Your Business Data</h2>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Incoming Calls per Month</label>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-slate-400">100</span>
+                        <span class="font-bold text-indigo-600" id="callsVal">1000</span>
+                        <span class="text-xs text-slate-400">10,000+</span>
+                    </div>
+                    <input type="range" min="100" max="10000" step="50" value="1000" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="callsInput">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Missed Call Rate (%)</label>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-slate-400">5%</span>
+                        <span class="font-bold text-indigo-600" id="missedRateVal">20%</span>
+                        <span class="text-xs text-slate-400">50%</span>
+                    </div>
+                    <input type="range" min="5" max="50" step="1" value="20" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="missedRateInput">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Average Value per Customer ($)</label>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-slate-400">$50</span>
+                        <span class="font-bold text-indigo-600" id="customerValueVal">$500</span>
+                        <span class="text-xs text-slate-400">$5,000</span>
+                    </div>
+                    <input type="range" min="50" max="5000" step="50" value="500" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="customerValueInput">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Conversion Rate from Calls (%)</label>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-slate-400">1%</span>
+                        <span class="font-bold text-indigo-600" id="conversionRateVal">10%</span>
+                        <span class="text-xs text-slate-400">50%</span>
+                    </div>
+                    <input type="range" min="1" max="50" step="1" value="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="conversionRateInput">
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-center">
+                <h2 class="text-xl font-semibold text-slate-800 mb-6 text-center">Your Monthly Impact</h2>
+                
+                <div class="space-y-6">
+                    <div class="flex justify-between items-end border-b border-slate-200 pb-3">
+                        <div>
+                            <p class="text-sm text-slate-500">Missed Calls</p>
+                            <p class="text-xl font-bold text-slate-800" id="missedCallsOut">200</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-end border-b border-slate-200 pb-3">
+                        <div>
+                            <p class="text-sm text-red-500 font-medium">Lost Revenue</p>
+                            <p class="text-3xl font-bold text-red-600" id="lostRevenueOut">$10,000</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-end bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                        <div>
+                            <p class="text-sm text-indigo-600 font-medium">Potential Revenue Recovered<br><span class="text-xs text-indigo-400">(Assuming AI handles 80% of missed calls)</span></p>
+                            <p class="text-4xl font-bold text-indigo-700 mt-1" id="recoveredRevenueOut">$8,000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 w-full">
+                        Get Started with AI Voice
+                    </button>
+                    <p class="text-xs text-slate-400 mt-4">Estimated costs of AI agents typically run a fraction of recovered revenue.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const callsInput = document.getElementById('callsInput');
+        const missedRateInput = document.getElementById('missedRateInput');
+        const customerValueInput = document.getElementById('customerValueInput');
+        const conversionRateInput = document.getElementById('conversionRateInput');
+
+        const callsVal = document.getElementById('callsVal');
+        const missedRateVal = document.getElementById('missedRateVal');
+        const customerValueVal = document.getElementById('customerValueVal');
+        const conversionRateVal = document.getElementById('conversionRateVal');
+
+        const missedCallsOut = document.getElementById('missedCallsOut');
+        const lostRevenueOut = document.getElementById('lostRevenueOut');
+        const recoveredRevenueOut = document.getElementById('recoveredRevenueOut');
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
+        }
+
+        function calculate() {
+            const calls = parseFloat(callsInput.value);
+            const missedRate = parseFloat(missedRateInput.value) / 100;
+            const customerValue = parseFloat(customerValueInput.value);
+            const conversionRate = parseFloat(conversionRateInput.value) / 100;
+
+            callsVal.innerText = calls.toLocaleString();
+            missedRateVal.innerText = missedRateInput.value + '%';
+            customerValueVal.innerText = formatCurrency(customerValue);
+            conversionRateVal.innerText = conversionRateInput.value + '%';
+
+            const missedCalls = Math.round(calls * missedRate);
+            const lostCustomers = missedCalls * conversionRate;
+            const lostRevenue = lostCustomers * customerValue;
+            
+            // Assume AI Voice agent recovers 80% of missed opportunities
+            const aiRecoveryRate = 0.8;
+            const recoveredRevenue = lostRevenue * aiRecoveryRate;
+
+            missedCallsOut.innerText = missedCalls.toLocaleString();
+            lostRevenueOut.innerText = formatCurrency(lostRevenue);
+            recoveredRevenueOut.innerText = formatCurrency(recoveredRevenue);
+        }
+
+        [callsInput, missedRateInput, customerValueInput, conversionRateInput].forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+
+        calculate();
+    </script>
+</body>
+</html>
